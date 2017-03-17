@@ -18,6 +18,7 @@ void takeToScreen(int entier){
 	char name[20],value[25];
 	nom_token(entier,name,value);
 	affiche_element(name,value,activated);
+	uniteCourante=yylex();
 }
 
 void programme(){
@@ -40,7 +41,6 @@ void optDecVariables(){
 		listeDecVariables();
 		if(uniteCourante==POINT_VIRGULE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
 		}
@@ -66,7 +66,6 @@ void listeDecVariablesBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante == VIRGULE){
 			takeToScreen(uniteCourante);
-			uniteCourante = yylex();
 			declarationVariable();
 			listeDecVariablesBis();
 			affiche_balise_fermante(__FUNCTION__,activated);
@@ -83,10 +82,8 @@ void declarationVariable(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante == ENTIER){
 		takeToScreen(uniteCourante);
-		uniteCourante = yylex();
 		if(uniteCourante == ID_VAR){
 			takeToScreen(uniteCourante);
-				uniteCourante = yylex();
 				optTailleTableau();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
@@ -103,15 +100,12 @@ void instructionFaire(){
 affiche_balise_ouvrante(__FUNCTION__,activated);
 		if(uniteCourante==FAIRE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 				instructionBloc();
 				if(uniteCourante==TANTQUE){
 					takeToScreen(uniteCourante);
-					uniteCourante=yylex();
 						expression();
 						if(uniteCourante==POINT_VIRGULE){
 							takeToScreen(uniteCourante);
-							uniteCourante=yylex();
 							affiche_balise_fermante(__FUNCTION__,activated);
 						  return;
 
@@ -126,13 +120,10 @@ void optTailleTableau(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante == CROCHET_OUVRANT){
 		takeToScreen(uniteCourante);
-		uniteCourante = yylex();
 		if(uniteCourante == NOMBRE){
 			takeToScreen(uniteCourante);
-			uniteCourante = yylex();
 			if(uniteCourante == CROCHET_FERMANT){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 			}
@@ -164,7 +155,6 @@ void declarationFonction(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante == ID_FCT){
 		takeToScreen(uniteCourante);
-		uniteCourante = yylex();
 		listeParam();
 		optDecVariables();
 		instructionBloc();
@@ -178,11 +168,9 @@ void listeParam(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if (uniteCourante == PARENTHESE_OUVRANTE) {
 		takeToScreen(uniteCourante);
-		uniteCourante = yylex();
 		optListeDecVariables();
 		if(uniteCourante == PARENTHESE_FERMANTE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
 		}
@@ -261,11 +249,9 @@ void instructionAffect(){
 		var();
 		if(uniteCourante == EGAL){
 			takeToScreen(uniteCourante);
-			uniteCourante= yylex();
 			expression();
 			if(uniteCourante==POINT_VIRGULE){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
 		}
@@ -292,11 +278,9 @@ void instructionBloc(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==ACCOLADE_OUVRANTE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			listeInstructions();
 			if(uniteCourante==ACCOLADE_FERMANTE){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 			}
@@ -308,11 +292,9 @@ void instructionSi(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==SI){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			if(uniteCourante==ALORS){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				instructionBloc();
 				optSinon();
 				affiche_balise_fermante(__FUNCTION__,activated);
@@ -326,7 +308,6 @@ void optSinon(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==SINON){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		instructionBloc();
 		affiche_balise_fermante(__FUNCTION__,activated);
 		return;
@@ -343,11 +324,9 @@ void instructionTantque(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==TANTQUE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			if(uniteCourante==FAIRE){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 					instructionBloc();
 					affiche_balise_fermante(__FUNCTION__,activated);
 					return;
@@ -361,7 +340,6 @@ void instructionAppel(){
 		appelFct();
 		if(uniteCourante== POINT_VIRGULE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
 	}
@@ -372,11 +350,9 @@ void instructionRetour(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==RETOUR){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			if(uniteCourante==POINT_VIRGULE){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 		}
@@ -388,17 +364,13 @@ void instructionEcriture(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==ECRIRE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		if(uniteCourante==PARENTHESE_OUVRANTE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 					expression();
 					if(uniteCourante==PARENTHESE_FERMANTE){
 						takeToScreen(uniteCourante);
-						 uniteCourante=yylex();
 						 if(uniteCourante==POINT_VIRGULE){
 							 takeToScreen(uniteCourante);
-							 uniteCourante=yylex();
 							 affiche_balise_fermante(__FUNCTION__,activated);
 							 return;
 					 }
@@ -412,7 +384,6 @@ void instructionVide(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==POINT_VIRGULE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		affiche_balise_fermante(__FUNCTION__,activated);
 		return;
 	}
@@ -432,7 +403,6 @@ void expressionBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==OU){
 		takeToScreen(uniteCourante);
-	uniteCourante=yylex();
 			conjonction();
 			expressionBis();
 			affiche_balise_fermante(__FUNCTION__,activated);
@@ -459,7 +429,6 @@ void conjonctionBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==ET){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			comparaison();
 			conjonctionBis();
 				affiche_balise_fermante(__FUNCTION__,activated);
@@ -494,7 +463,6 @@ void expArithBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==PLUS || uniteCourante==MOINS ){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 	  terme();
 		expArithBis();
 		affiche_balise_fermante(__FUNCTION__,activated);
@@ -511,7 +479,6 @@ void comparaisonBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==EGAL || uniteCourante==INFERIEUR){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expArith();
 			comparaisonBis();
 			affiche_balise_fermante(__FUNCTION__,activated);
@@ -540,7 +507,6 @@ void termeBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==FOIS || uniteCourante==DIVISE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			negation();
 			termeBis();
 			affiche_balise_fermante(__FUNCTION__,activated);
@@ -563,7 +529,6 @@ void negation(){
 }
 if(uniteCourante==NON){
 	takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			negation();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
@@ -577,18 +542,15 @@ void facteur(){
 
 	if(uniteCourante==PARENTHESE_OUVRANTE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			if(uniteCourante==PARENTHESE_FERMANTE){
 					takeToScreen(uniteCourante);
-					uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 			}
 	}
 	if(uniteCourante==NOMBRE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		affiche_balise_fermante(__FUNCTION__,activated);
 		return;
 	}
@@ -605,13 +567,10 @@ void facteur(){
 	}
 	if(uniteCourante==LIRE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		if(uniteCourante==PARENTHESE_OUVRANTE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			if(uniteCourante==PARENTHESE_FERMANTE){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 			}
@@ -624,7 +583,6 @@ void var(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==ID_VAR){
 		takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 			optIndice();
 			affiche_balise_fermante(__FUNCTION__,activated);
 			return;
@@ -636,11 +594,9 @@ void optIndice(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==CROCHET_OUVRANT){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			if(uniteCourante==CROCHET_FERMANT){
 				takeToScreen(uniteCourante);
-				uniteCourante=yylex();
 				affiche_balise_fermante(__FUNCTION__,activated);
 				return;
 		}
@@ -656,14 +612,11 @@ void appelFct(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==ID_FCT){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 		if(uniteCourante==PARENTHESE_OUVRANTE){
 			takeToScreen(uniteCourante);
-			uniteCourante=yylex();
 				listeExpressions();
 				if(uniteCourante==PARENTHESE_FERMANTE){
 					takeToScreen(uniteCourante);
-					uniteCourante=yylex();
 					affiche_balise_fermante(__FUNCTION__,activated);
 					return;
 			}
@@ -692,7 +645,6 @@ void listeExpressionsBis(){
 	affiche_balise_ouvrante(__FUNCTION__,activated);
 	if(uniteCourante==VIRGULE){
 		takeToScreen(uniteCourante);
-		uniteCourante=yylex();
 			expression();
 			listeExpressionsBis();
 				affiche_balise_fermante(__FUNCTION__,activated);
